@@ -77,7 +77,7 @@ pipeline {
                 )]) {
                     sh '''
                     curl -v -u $NEXUS_USER:$NEXUS_PASS \
-                    --upload-file zomato-build.zip \
+                    --upload-file farmhouse-build.zip \
                     http://localhost:8081/repository/farmhouse/farmhouse-build-${BUILD_NUMBER}.zip
                     '''
                 }
