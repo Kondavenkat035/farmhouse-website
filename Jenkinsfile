@@ -46,12 +46,12 @@ pipeline {
         }
  stage('SonarQube Analysis') {
     environment {
-        SCANNER_HOME = tool 'SonarScanner'
+        SCANNER_HOME = tool 'sonarqube'
     }
     steps {
         withSonarQubeEnv('sonarqube') {
             sh '''
-            ${SCANNER_HOME}/bin/sonar-scanner \
+            ${SCANNER_HOME}/bin/sonarquber \
             -Dsonar.projectKey=farmhouse-app \
             -Dsonar.projectName=farmhouse-app \
             -Dsonar.sources=. \
