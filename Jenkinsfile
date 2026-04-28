@@ -44,20 +44,19 @@ pipeline {
                 sh 'zip -r farmhouse-build.zip build/'
             }
         }
-      stage('SonarQube Analysis') {
+ stage('SonarQube Analysis') {
+    environment {
+        SCANNER_HOME = tool 'SonarScanner'
+    }
     steps {
-        script {
-            def scannerHome = tool 'SonarScanner'
-
-            withSonarQubeEnv('sonarqube') {
-                sh """
-                ${scannerHome}/bin/sonar-scanner \
-                -Dsonar.projectKey=farmhouse \
-                -Dsonar.projectName=farmhouse-App \
-                -Dsonar.sources=src \
-                -Dsonar.projectVersion=${BUILD_NUMBER}
-                """
-            }
+        withSonarQubeEnv('sonarqube') {
+            sh '''
+            ${SCANNER_HOME}/bin/sonar-scanner \
+            -Dsonar.projectKey=farmhouse-app \
+            -Dsonar.projectName=farmhouse-app \
+            -Dsonar.sources=. \
+            -Dsonar.language=js
+            '''
         }
     }
 }
