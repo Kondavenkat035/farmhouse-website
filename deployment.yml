@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: farmhouseapplication
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: farmhouse
+  template:
+    metadata:
+      labels:
+        app: farmhouse
+    spec:
+      containers:
+      - name: farmhouse-cont
+        image: kondavenkat035/farmhouse:latest
+        ports:
+        - containerPort: 8080
