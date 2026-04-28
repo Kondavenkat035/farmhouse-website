@@ -51,7 +51,7 @@ pipeline {
     steps {
         withSonarQubeEnv('sonarqube') {
             sh '''
-            ${SCANNER_HOME}/bin/sonarquber \
+            ${SCANNER_HOME}/bin/sonar-scanner \
             -Dsonar.projectKey=farmhouse-app \
             -Dsonar.projectName=farmhouse-app \
             -Dsonar.sources=. \
