@@ -17,7 +17,7 @@ pipeline {
 
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/CVN9696/zomato-nodejs.git'
+                git branch: 'main', url: 'https://github.com/Kondavenkat035/farmhouse-website.git'
             }
         }
 
