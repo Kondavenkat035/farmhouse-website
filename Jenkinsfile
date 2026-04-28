@@ -68,5 +68,20 @@ pipeline {
                 }
             }
         }
+      stage('Upload to Nexus') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'nexus',
+                    usernameVariable: 'NEXUS_USER',
+                    passwordVariable: 'NEXUS_PASS'
+                )]) {
+                    sh '''
+                    curl -v -u $NEXUS_USER:$NEXUS_PASS \
+                    --upload-file zomato-build.zip \
+                    http://localhost:8081/repository/farmhouse/farmhouse-build-${BUILD_NUMBER}.zip
+                    '''
+                }
+            }
+        }
   }
 }
