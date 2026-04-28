@@ -5,6 +5,9 @@ pipeline {
         jdk 'jdk21'
         nodejs 'node23'
  }
+        environment {
+        SONARQUBE_ENV = 'sonarqube'
+        }          
   stages {
 
         stage('Clone Repository') {
@@ -34,6 +37,31 @@ pipeline {
         stage('Package Artifact') {
             steps {
                 sh 'zip -r zomato-build.zip build/'
+            }
+        }
+      stage('SonarQube Analysis') {
+    steps {
+        script {
+            def scannerHome = tool 'SonarScanner'
+
+            withSonarQubeEnv('sonarqube') {
+                sh """
+                ${scannerHome}/bin/sonar-scanner \
+                -Dsonar.projectKey=farmhouse \
+                -Dsonar.projectName=farmhouse-App \
+                -Dsonar.sources=src \
+                -Dsonar.projectVersion=${BUILD_NUMBER}
+                """
+            }
+        }
+    }
+}
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
   }
