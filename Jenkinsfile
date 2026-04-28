@@ -9,6 +9,11 @@ pipeline {
         SONARQUBE_ENV = 'sonarqube'
         }          
   stages {
+      stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
 
         stage('Clone Repository') {
             steps {
