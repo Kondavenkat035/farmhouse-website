@@ -36,7 +36,7 @@ pipeline {
 
         stage('Package Artifact') {
             steps {
-                sh 'zip -r zomato-build.zip build/'
+                sh 'zip -r farmhouse-build.zip build/'
             }
         }
       stage('SonarQube Analysis') {
