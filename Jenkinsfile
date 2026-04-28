@@ -24,7 +24,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh 'npm install --save-dev jest'
             }
         }
 
@@ -56,6 +56,7 @@ pipeline {
             -Dsonar.projectKey=farmhouse-app \
             -Dsonar.projectName=farmhouse-app \
             -Dsonar.sources=. \
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
             -Dsonar.language=js
             '''
         }
