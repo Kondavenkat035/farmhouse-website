@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "build": "echo \"No build step required\"",
-    "test": "echo \"No tests specified\" && exit 0"
+    "build": "rm -rf build && mkdir build && cp -r views public app.js package.json build/",
+    "test": "jest"
   },
   "keywords": [
     "nodejs",
