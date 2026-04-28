@@ -7,6 +7,7 @@ pipeline {
  }
         environment {
         SONARQUBE_ENV = 'sonarqube'
+        DOCKER_IMAGE = "kondavenkat035/farmhouse"
         }          
   stages {
       stage('Clean Workspace') {
@@ -79,6 +80,31 @@ pipeline {
                     curl -v -u $NEXUS_USER:$NEXUS_PASS \
                     --upload-file farmhouse-build.zip \
                     http://localhost:8081/repository/farmhouse/farmhouse-build-${BUILD_NUMBER}.zip
+                    '''
+                }
+            }
+        }
+      stage('Build Docker Image') {
+            steps {
+                sh '''
+                docker build -t $DOCKER_IMAGE:${BUILD_NUMBER} .
+                docker tag $DOCKER_IMAGE:${BUILD_NUMBER} $DOCKER_IMAGE:latest
+                '''
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker',
+                    usernameVariable: 'USER',
+                    passwordVariable: 'PASS'
+                )]) {
+                    sh '''
+                    echo $PASS | docker login -u $USER --password-stdin
+                    docker push $DOCKER_IMAGE:${BUILD_NUMBER}
+                    docker push $DOCKER_IMAGE:latest
+                    docker logout
                     '''
                 }
             }
